@@ -1,22 +1,23 @@
 import React from 'react'
 import SearchForm from "@/components/SearchForm";
 import StartupCard from "@/components/StartupCard";
+import {STARTUPS_QUERY} from "@/sanity/lib/queries";
+import {StartupCardType} from "@/components/StartupCard";
+import {sanityFetch , SanityLive} from "@/sanity/lib/live";
+import {auth } from "@/auth";
+
 
 export default async function Home({ searchParams }: {
     searchParams: Promise<{ query?: string }>
 }) {
     const query = (await  searchParams).query;
+    const params = {search : query || null}
 
-    const posts = [{
-        _createdAt : new Date(),
-        views : 55,
-        author : { id : 1, name: "Paris"},
-        _id : 1,
-        description : 'This is a description',
-        image : 'https://images.unsplash.com/photo-1625314868143-20e93ce3ff33?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8cm9ib3R8ZW58MHx8MHx8fDA%3D',
-        category: 'Robots',
-        title : 'We Robots'
-    }];
+    const session = await auth();
+
+    console.log(session?.id);
+
+    const {data: posts} =  await sanityFetch({query : STARTUPS_QUERY, params})
 
     return (
         <>
@@ -43,6 +44,7 @@ export default async function Home({ searchParams }: {
                     )}
                 </ul>
             </section>
+            <SanityLive />
         </>
     )
 }
