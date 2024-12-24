@@ -17,7 +17,7 @@ export default async function Home() {
                         {session && session.user ? (
                             <>
                                 {/*<Link href="/startup/create">*/}
-                                <Link href="/public">
+                                <Link href="/startup/create">
                                     <span>Create</span>
                                 </Link>
 
